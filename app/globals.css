@@ -22,9 +22,9 @@
   /* Light */
   --background: #ffffff;
   --surface: #ffffff;
-  --surface-muted: #fafafa;
+  --surface-muted: #f5f6f8;
   --border: #ebebee;
-  --border-strong: #d9d9de;
+  --border-strong: #c8cad1;
 
   --foreground: #111318;
   --muted-foreground: #6b7079;
@@ -50,7 +50,7 @@
   --surface: #14171c;
   --surface-muted: #181b21;
   --border: #23272e;
-  --border-strong: #31363f;
+  --border-strong: #3a404b;
 
   --foreground: #ececef;
   --muted-foreground: #8b919c;
@@ -72,7 +72,7 @@
     --surface: #14171c;
     --surface-muted: #181b21;
     --border: #23272e;
-    --border-strong: #31363f;
+    --border-strong: #3a404b;
 
     --foreground: #ececef;
     --muted-foreground: #8b919c;
