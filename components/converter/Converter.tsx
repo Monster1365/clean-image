@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { convertImage } from "@/lib/convert/client";
 import { optionsKey, type ConvertOptions } from "@/lib/convert/types";
 import { replaceExtension } from "@/lib/format";
+import { RESET_EVENT } from "@/lib/reset";
 import { downloadBlob, makeZip } from "@/lib/zip";
 import { ACCEPT, DropZone } from "./DropZone";
 import { FileRow, type FileItem } from "./FileRow";
@@ -67,11 +68,17 @@ export function Converter() {
     });
   }
 
-  function clearAll() {
-    items.forEach((i) => URL.revokeObjectURL(i.previewUrl));
+  const clearAll = useCallback(() => {
+    itemsRef.current.forEach((i) => URL.revokeObjectURL(i.previewUrl));
     setItems([]);
     setNotice(null);
-  }
+  }, []);
+
+  // Logo click in the header resets the page the same way as "모두 지우기".
+  useEffect(() => {
+    window.addEventListener(RESET_EVENT, clearAll);
+    return () => window.removeEventListener(RESET_EVENT, clearAll);
+  }, [clearAll]);
 
   const isStale = (i: Item) => i.status === "done" && i.resultKey !== key;
   const needsWork = (i: Item) =>
