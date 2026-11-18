@@ -1,0 +1,155 @@
+@import "tailwindcss";
+
+/* ───────────────────────── Theme tokens ─────────────────────────
+   Neutral, airy base. Sky blue is an accent only (primary action,
+   icons, focus ring). Components use semantic tokens only.
+
+   Theme selection: <html data-theme="light|dark">; with no attribute
+   the OS preference (prefers-color-scheme) decides.
+   ─────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand accent (sky) */
+  --sky-50: #f0f9ff;
+  --sky-100: #e0f2fe;
+  --sky-200: #bae6fd;
+  --sky-300: #7dd3fc;
+  --sky-400: #38bdf8;
+  --sky-500: #0ea5e9;
+  --sky-600: #0284c7;
+  --sky-700: #0369a1;
+
+  /* Light */
+  --background: #ffffff;
+  --surface: #ffffff;
+  --surface-muted: #fafafa;
+  --border: #ebebee;
+  --border-strong: #d9d9de;
+
+  --foreground: #111318;
+  --muted-foreground: #6b7079;
+
+  --primary: var(--sky-500);
+  --primary-hover: var(--sky-600);
+  --primary-foreground: #ffffff;
+  --primary-soft: var(--sky-50);
+  --primary-soft-foreground: var(--sky-700);
+  --ring: var(--sky-400);
+
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+
+  --shadow-color: 220 15% 20%;
+
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --background: #0e1014;
+  --surface: #14171c;
+  --surface-muted: #181b21;
+  --border: #23272e;
+  --border-strong: #31363f;
+
+  --foreground: #ececef;
+  --muted-foreground: #8b919c;
+
+  --primary: var(--sky-400);
+  --primary-hover: var(--sky-300);
+  --primary-foreground: #04203a;
+  --primary-soft: rgba(56, 189, 248, 0.1);
+  --primary-soft-foreground: var(--sky-300);
+
+  --shadow-color: 220 40% 2%;
+
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --background: #0e1014;
+    --surface: #14171c;
+    --surface-muted: #181b21;
+    --border: #23272e;
+    --border-strong: #31363f;
+
+    --foreground: #ececef;
+    --muted-foreground: #8b919c;
+
+    --primary: var(--sky-400);
+    --primary-hover: var(--sky-300);
+    --primary-foreground: #04203a;
+    --primary-soft: rgba(56, 189, 248, 0.1);
+    --primary-soft-foreground: var(--sky-300);
+
+    --shadow-color: 220 40% 2%;
+
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-sky-50: var(--sky-50);
+  --color-sky-100: var(--sky-100);
+  --color-sky-200: var(--sky-200);
+  --color-sky-300: var(--sky-300);
+  --color-sky-400: var(--sky-400);
+  --color-sky-500: var(--sky-500);
+  --color-sky-600: var(--sky-600);
+  --color-sky-700: var(--sky-700);
+
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-soft-foreground: var(--primary-soft-foreground);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
+  --font-sans: "Pretendard Variable", Pretendard, var(--font-geist-sans),
+    -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo",
+    "Noto Sans KR", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* Subtle rounding */
+  --radius-xs: 3px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  --shadow-soft: 0 1px 2px hsl(var(--shadow-color) / 0.04),
+    0 2px 8px -2px hsl(var(--shadow-color) / 0.06);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    letter-spacing: -0.01em;
+  }
+
+  ::selection {
+    background: var(--sky-200);
+    color: #0c4a6e;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
