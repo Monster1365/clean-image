@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { convertImage } from "@/lib/convert/client";
+import { looksLikeHeic } from "@/lib/convert/heic-detect";
 import { optionsKey, type ConvertOptions } from "@/lib/convert/types";
 import { replaceExtension } from "@/lib/format";
 import { RESET_EVENT } from "@/lib/reset";
@@ -51,7 +52,7 @@ export function Converter() {
 
     const next: Item[] = accepted.map((file) => {
       const base = { id: newId(), file, previewUrl: URL.createObjectURL(file) };
-      if (!ACCEPTED.has(file.type))
+      if (!ACCEPTED.has(file.type) && !looksLikeHeic(file))
         return { ...base, status: "error", error: "지원하지 않는 형식", fatal: true };
       if (file.size > MAX_FILE_SIZE)
         return { ...base, status: "error", error: "20MB 초과", fatal: true };

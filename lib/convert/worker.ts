@@ -12,6 +12,8 @@ import type {
 } from "./types";
 import { MIME_TYPES } from "./types";
 import { getEncoder } from "./codecs";
+import { decodeHeic } from "./heic";
+import { sniffHeic } from "./heic-detect";
 
 declare const self: DedicatedWorkerGlobalScope;
 
@@ -25,8 +27,16 @@ function targetSize(w: number, h: number, resize: ResizeOption) {
   };
 }
 
+/** Decode any supported input to an ImageBitmap. HEIC goes through libheif (see heic.ts). */
+async function decode(file: Blob): Promise<ImageBitmap> {
+  if (await sniffHeic(file)) {
+    return createImageBitmap(await decodeHeic(file));
+  }
+  return createImageBitmap(file, { imageOrientation: "from-image" });
+}
+
 async function rasterize(file: Blob, options: ConvertOptions): Promise<ImageData> {
-  const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
+  const bitmap = await decode(file);
   try {
     const { width, height } = targetSize(bitmap.width, bitmap.height, options.resize);
     const canvas = new OffscreenCanvas(width, height);

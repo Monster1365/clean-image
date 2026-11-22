@@ -5,6 +5,11 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {
+    // libheif-js (HEIC decoder) has a Node-only branch that requires fs/path.
+    resolveAlias: {
+      fs: { browser: "./lib/shims/empty.ts" },
+      path: { browser: "./lib/shims/empty.ts" },
+    },
     rules: {
       "*.css": {
         loaders: ["@tailwindcss/turbopack"],

@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { Download, Loader2, X } from "lucide-react";
+import { looksLikeHeic } from "@/lib/convert/heic-detect";
 import { formatBytes, sizeChange } from "@/lib/format";
 import type { ConvertResult } from "@/lib/convert/types";
 
@@ -15,6 +17,28 @@ export type FileItem = {
   resultKey?: string;
   error?: string;
 };
+
+const thumbClass = "size-11 shrink-0 rounded-md border border-border bg-surface-muted";
+
+/** Preview image; falls back to a plain tile when the browser can't render it (e.g. HEIC outside Safari). */
+function Thumb({ file, src }: { file: File; src: string }) {
+  const [broken, setBroken] = useState(false);
+  const heic = looksLikeHeic(file);
+
+  if (broken || !(file.type.startsWith("image/") || heic)) {
+    return (
+      <span
+        className={`${thumbClass} grid place-items-center text-[10px] font-semibold text-muted-foreground`}
+      >
+        {heic ? "HEIC" : null}
+      </span>
+    );
+  }
+  return (
+    // eslint-disable-next-line @next/next/no-img-element -- local blob preview
+    <img src={src} alt="" onError={() => setBroken(true)} className={`${thumbClass} object-cover`} />
+  );
+}
 
 export function FileRow({
   item,
@@ -33,16 +57,7 @@ export function FileRow({
 
   return (
     <li className="flex items-center gap-4 py-3">
-      {file.type.startsWith("image/") ? (
-        // eslint-disable-next-line @next/next/no-img-element -- local blob preview
-        <img
-          src={item.previewUrl}
-          alt=""
-          className="size-11 shrink-0 rounded-md border border-border bg-surface-muted object-cover"
-        />
-      ) : (
-        <span className="size-11 shrink-0 rounded-md border border-border bg-surface-muted" />
-      )}
+      <Thumb file={file} src={item.previewUrl} />
 
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium">{file.name}</p>

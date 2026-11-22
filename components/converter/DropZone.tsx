@@ -5,6 +5,8 @@ import { ImageUp } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 export const ACCEPT = "image/png,image/jpeg,image/webp,image/avif,image/gif,image/bmp";
+// HEIC MIME types are often missing on Chrome/Firefox, so extensions are listed too.
+const INPUT_ACCEPT = `${ACCEPT},image/heic,image/heif,.heic,.heif`;
 
 export function DropZone({
   onFiles,
@@ -57,7 +59,7 @@ export function DropZone({
       <input
         ref={inputRef}
         type="file"
-        accept={ACCEPT}
+        accept={INPUT_ACCEPT}
         multiple
         hidden
         onChange={(e) => {
@@ -79,7 +81,7 @@ export function DropZone({
           <div>
             <p className="font-medium">이미지를 여기로 끌어다 놓으세요</p>
             <p className="mt-1.5 text-sm text-muted-foreground">
-              또는 클릭해서 파일 선택 · 최대 20MB · 여러 장 가능
+              또는 클릭해서 파일 선택 · 최대 20MB · HEIC(아이폰 사진) 지원
             </p>
           </div>
           <Button size="md" className="pointer-events-none mt-2" tabIndex={-1}>
